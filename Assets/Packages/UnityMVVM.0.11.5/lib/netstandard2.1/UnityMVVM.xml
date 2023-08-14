@@ -1,0 +1,591 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UnityMVVM</name>
+    </assembly>
+    <members>
+        <member name="T:UnityMVVM.DI.DiContainerExtensions">
+            <summary>
+            Subcontainer for mvvm structure. It also modify parent container and inject there MVVM core control objects.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])">
+            <summary>
+            Configure container for MVVM pattern usage.
+            </summary>
+            <param name="container">The container to configure.</param>
+            <param name="layersData">Data about presentation layers.</param>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.InstallView``3(Zenject.DiContainer,System.String,UnityEngine.GameObject)">
+            <summary>
+            Installs <see cref="T:UnityMVVM.ViewModelCore.ViewModelsFactory.IViewFactory"/> for specified View-ViewModel pair.
+            </summary>
+            <param name="container">MVVM container to configure.</param>
+            <param name="viewName">View identificator for opening.</param>
+            <param name="viewPrefab">View prefab. It will be instantiated on creation. It should contains <typeparamref name="TView"/> component inside.</param>
+            <typeparam name="TView">The type of a view</typeparam>
+            <typeparam name="TViewModel">The type of a view model.</typeparam>
+            <typeparam name="TViewModelImpl">The type, that implements a view model.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.InstallView``3(Zenject.DiContainer,System.String,System.Func{UnityEngine.GameObject})">
+            <summary>
+            Installs <see cref="T:UnityMVVM.ViewModelCore.ViewModelsFactory.IViewFactory"/> for specified View-ViewModel pair.
+            </summary>
+            <param name="container">MVVM container to configure.</param>
+            <param name="viewName">View identificator for opening.</param>
+            <param name="viewPrefabGetter">The method to obtain view prefab. View should contains <typeparamref name="TView"/> component inside.</param>
+            <typeparam name="TView">The type of a view</typeparam>
+            <typeparam name="TViewModel">The type of a view model.</typeparam>
+            <typeparam name="TViewModelImpl">The type, that implements a view model.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.InstallView``3(Zenject.DiContainer)">
+            <summary>
+            Installs <see cref="T:UnityMVVM.ViewModelCore.ViewModelsFactory.IViewFactory"/> for specified View-ViewModel pair.
+            </summary>
+            <param name="container">MVVM container to configure.</param>
+            <typeparam name="TView">The type of a view</typeparam>
+            <typeparam name="TViewModel">The type of a view model.</typeparam>
+            <typeparam name="TViewModelImpl">The type, that implements a view model.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.ProvideAccessForViewLayer``1(Zenject.DiContainer)">
+            <summary>
+            Provides an access for specified objet types for view layer.
+            </summary>
+            <typeparam name="T">The type of dependency to be resolved in view layer.</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.ProvideAccessForViewLayer``2(Zenject.DiContainer)">
+            <summary>
+            Provides an access for specified objet types for view layer.
+            </summary>
+            <typeparam name="TModelAccessInterface">How the dependency is bound in the model layer.</typeparam>
+            <typeparam name="TCommonAccessInterface">How the dependency should be bound in the view layer.</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.ProvideAccessForViewModelLayer``1(Zenject.DiContainer)">
+            <summary>
+            Provides an access for specified objet types for view-model layer.
+            </summary>
+            <typeparam name="T">The type of dependency to be resolved in view-model layer.</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.ProvideAccessForViewModelLayer``2(Zenject.DiContainer)">
+            <summary>
+            Provides an access for specified objet types for view-model layer.
+            </summary>
+            <typeparam name="TModelAccessInterface">How the dependency is bound in the model layer.</typeparam>
+            <typeparam name="TCommonAccessInterface">How the dependency should be bound in the view-model layer.</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBind``3(Zenject.DiContainer)">
+            <summary>
+            Binds a dependency for both model and view-model layers.
+            </summary>
+            <typeparam name="TModelAccessInterface">The interface to access the dependency in the model layer.</typeparam>
+            <typeparam name="TCommonAccessInterface">The interface to access the dependency in view-model layer.</typeparam>
+            <typeparam name="TImpl">The dependency implementation.</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBind``1(Zenject.DiContainer,System.Collections.Generic.IReadOnlyCollection{System.Type},System.Collections.Generic.IReadOnlyCollection{System.Type})">
+            <summary>
+            Binds a dependency for both model and view-model layers.
+            </summary>
+            <param name="container">MVVM container to configure.</param>
+            <param name="modelAccessInterfaces">Interface to access the dependency in the model layer.</param>
+            <param name="commonAccessInterfaces">Interface to access the dependency in view-model layer.</param>
+            <typeparam name="TImpl">The dependency implementation.</typeparam>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBindMono``3(Zenject.DiContainer,UnityEngine.GameObject)">
+            <summary>
+            Binds a dependency for both model and view-model layers.
+            </summary>
+            <typeparam name="TModelAccessInterface">The interface to access the dependency in the model layer.</typeparam>
+            <typeparam name="TCommonAccessInterface">The interface to access the dependency in view-model layer.</typeparam>
+            <typeparam name="TImpl">The implementation of the dependency</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <param name="prefab">The dependency prefab.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBindMono``1(Zenject.DiContainer,System.Collections.Generic.IReadOnlyCollection{System.Type},System.Collections.Generic.IReadOnlyCollection{System.Type},UnityEngine.GameObject)">
+            <summary>
+            Binds a dependency for both model and view-model layers.
+            </summary>
+            <param name="container">MVVM container to configure.</param>
+            <param name="modelAccessInterfaces">Interfaces to access the dependency in the model layer.</param>
+            <param name="commonAccessInterfaces">Interfaces to access the dependency in view-model layer.</param>
+            <param name="prefab">The dependency prefab.</param>
+            <typeparam name="TImpl">The implementation of the dependency</typeparam>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBind``2(Zenject.DiContainer)">
+            <summary>
+            Binds a dependency for both model and view model access layers.
+            </summary>
+            <typeparam name="TCommonAccessInterface">The interface to access the model in view-model layer.</typeparam>
+            <typeparam name="TImpl">The implementation of the dependency</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBind``1(Zenject.DiContainer,System.Collections.Generic.IReadOnlyCollection{System.Type})">
+            <summary>
+            Binds a dependency for both model and view model access layers.
+            </summary>
+            <param name="container">MVVM container to configure.</param>
+            <param name="commonAccessInterfaces">Interfaces to access the model in view-model layer.</param>
+            <typeparam name="TImpl">The implementation of the dependency</typeparam>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBindMono``2(Zenject.DiContainer,UnityEngine.GameObject)">
+            <summary>
+            Binds a dependency for both model and view model access layers.
+            </summary>
+            <typeparam name="TCommonAccessInterface">The interface to access the model in view-model layer.</typeparam>
+            <typeparam name="TImpl">The implementation of the dependency.</typeparam>
+            <param name="container">MVVM container to configure.</param>
+            <param name="prefab">The dependency prefab</param>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.FastBindMono``1(Zenject.DiContainer,System.Collections.Generic.IReadOnlyCollection{System.Type},UnityEngine.GameObject)">
+            <summary>
+            Binds a dependency for both model and view model access layers.
+            </summary>
+            <param name="container">MVVM container to configure.</param>
+            <param name="commonAccessInterfaces">Interfaces to access the model in view-model layer.</param>
+            <param name="prefab">The dependency prefab</param>
+            <typeparam name="TImpl">The implementation of the dependency.</typeparam>
+            <exception cref="T:System.InvalidOperationException">
+            Being thrown if it is not MVVM container.
+            Use <see cref="M:UnityMVVM.DI.DiContainerExtensions.UseAsMvvmContainer(Zenject.DiContainer,System.ValueTuple{System.String,UnityEngine.Transform}[])"/> to configure container.
+            </exception>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.GetViewModelsContainer(Zenject.DiContainer)">
+            <summary>
+            Returns a container for view-model layer.
+            </summary>
+            <param name="container">The MVVM container.</param>
+        </member>
+        <member name="M:UnityMVVM.DI.DiContainerExtensions.GetViewsContainer(Zenject.DiContainer)">
+            <summary>
+            Returns a container for view layer.
+            </summary>
+            <param name="container">The MVVM container.</param>
+        </member>
+        <member name="T:UnityMVVM.DI.IViewsModelsContainerAdapter">
+            <summary>
+            The adapter for view models DI container.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.DI.IViewsModelsContainerAdapter.ResolveViewFactory(System.String)">
+            <summary>
+            Resolve the factory for specified view.
+            </summary>
+            <returns>The factory, that creates views.</returns>
+        </member>
+        <member name="T:UnityMVVM.DI.ViewModelsContainerAdapter">
+            <inheritdoc cref="T:UnityMVVM.DI.IViewsModelsContainerAdapter"/>
+        </member>
+        <member name="M:UnityMVVM.DI.ViewModelsContainerAdapter.#ctor(Zenject.DiContainer)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="viewsContainer">The container to adapt</param>
+        </member>
+        <member name="P:UnityMVVM.DI.ViewModelsContainerAdapter.Container">
+            <summary>
+            Di container for view-model layer.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.DI.ViewModelsContainerAdapter.ResolveViewFactory(System.String)">
+            <inheritdoc cref="M:UnityMVVM.DI.IViewsModelsContainerAdapter.ResolveViewFactory(System.String)"/>
+        </member>
+        <member name="T:UnityMVVM.IViewInitializer">
+            <summary>
+            The interface for initialize the view.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.IViewInitializer.SetViewModel(UnityMVVM.ViewModelCore.IViewModel)">
+            <summary>
+            Sets the view model.
+            </summary>
+            <param name="viewModel"></param>
+        </member>
+        <member name="T:UnityMVVM.ViewBehaviour`1">
+            <summary>
+            Base class for views.
+            </summary>
+            <typeparam name="T">The view model type for this view.</typeparam>
+        </member>
+        <member name="P:UnityMVVM.ViewBehaviour`1.ViewModel">
+            <summary>
+            Current view model.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewBehaviour`1.OnViewModelSet">
+            <summary>
+            Called after view model changed.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewBehaviour`1.Close">
+            <summary>
+            Method that starts and handle close process.
+            </summary>
+            <returns>Promise, that indicates closing process.</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewBehaviour`1.SmartBind``1(AsyncReactAwait.Bindable.IBindable{``0},System.Action,System.Boolean)">
+            <summary>
+            Binds the handler to a bindable object and automatically unbind it on view model cleared.
+            </summary>
+            <param name="bindable">The bindable to bind to.</param>
+            <param name="handler">The handler to being bound.</param>
+            <param name="callImmediately">Pass true to call handler for current value.</param>
+            <typeparam name="TBind">The type of bindable value.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.ViewBehaviour`1.SmartBind``1(AsyncReactAwait.Bindable.IBindable{``0},System.Action{``0},System.Boolean)">
+            <summary>
+            Binds the handler to a bindable object and automatically unbind it on view model cleared.
+            </summary>
+            <param name="bindable">The bindable to bind to.</param>
+            <param name="handler">The handler to being bound.</param>
+            <param name="callImmediately">Pass true to call handler for current value.</param>
+            <typeparam name="TBind">The type of bindable value.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.ViewBehaviour`1.SmartBind``1(AsyncReactAwait.Bindable.IBindable{``0},System.Action{``0,``0})">
+            <summary>
+            Binds the handler to a bindable object and automatically unbind it on view model cleared.
+            </summary>
+            <param name="bindable">The bindable to bind to.</param>
+            <param name="handler">The handler to being bound.</param>
+            <typeparam name="TBind">The type of bindable value.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.ViewBehaviour`1.OnViewModelClear">
+            <summary>
+            Called just before the view model and the view destroyed.
+            </summary>
+        </member>
+        <member name="T:UnityMVVM.ViewManager.IViewManager">
+            <summary>
+            Responsible for managing views and view models.
+            </summary>
+        </member>
+        <member name="E:UnityMVVM.ViewManager.IViewManager.ViewOpened">
+            <summary>
+            Fires on any view opened.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.GetLayerIds">
+            <summary>
+            Returns all view layer ids.
+            </summary>
+            <returns>All layer ids.</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.Create(UnityMVVM.ViewModelCore.IViewModel,System.String,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)">
+            <summary>
+            Creates viewModel and corresponding view.
+            </summary>
+            <param name="parent">Parent view model.</param>
+            <param name="viewName">The identifier of the view.</param>
+            <param name="container">The container to instantiate the view to.</param>
+            <param name="payload">View model payload.</param>
+            <returns>Returns created view model.</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.Create``1(UnityMVVM.ViewModelCore.IViewModel,System.String,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)">
+            <inheritdoc cref="M:UnityMVVM.ViewManager.IViewManager.Create(UnityMVVM.ViewModelCore.IViewModel,System.String,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)"/>
+            <typeparam name="T">A view model type.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.Open(System.String,System.String,UnityMVVM.ViewModelCore.IPayload)">
+            <summary>
+            Creates view model and corresponding view. Closes all views on layers above specified.
+            </summary>
+            <param name="viewLayerId">A layer, where view should be created.</param>
+            <param name="payload">View model payload.</param>
+            <param name="viewName">The identifier of the view.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.OpenExact(System.String,System.String,UnityMVVM.ViewModelCore.IPayload)">
+            <summary>
+            Creates view model and corresponding view.
+            </summary>
+            <param name="viewLayerId">A layer, where view should be created.</param>
+            <param name="payload">View model payload.</param>
+            <param name="viewName">The identifier of the view.</param>
+            <returns>The promise that indicates open process.</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.Close(System.String)">
+            <summary>
+            Destroys all view on specified layer.
+            </summary>
+            <param name="viewLayerId">A layer on which views should be closed.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.CloseAbove(System.String)">
+            <summary>
+            Close all view on specified layer and all layer above(Starting from the top one).
+            </summary>
+            <param name="viewLayerId">A layer on which views should be closed.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.GetViewName(System.String)">
+            <summary>
+            Gets a name of the view on the specified layer.
+            </summary>
+            <param name="viewLayerId">The id of layer to get a view name.</param>
+            <returns>The view name</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.IViewManager.GetView(System.String)">
+            <summary>
+            Gets the view model of the view on the specified layer.
+            </summary>
+            <param name="viewLayerId">The id of layer to get a view.</param>
+            <returns>The view model.</returns>
+        </member>
+        <member name="T:UnityMVVM.ViewManager.ViewLayer.IViewLayer">
+            <summary>
+            The layer to place a views.
+            </summary>
+        </member>
+        <member name="P:UnityMVVM.ViewManager.ViewLayer.IViewLayer.Id">
+            <summary>
+            The layer id.
+            </summary>
+        </member>
+        <member name="P:UnityMVVM.ViewManager.ViewLayer.IViewLayer.Container">
+            <summary>
+            Container for views.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewLayer.IViewLayer.Clear">
+            <summary>
+            Close root view model.
+            </summary>
+            <returns>A promise that indicates the close proccess.</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewLayer.IViewLayer.ClearInstantly">
+            <summary>
+            Destroy root view model.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewLayer.IViewLayer.GetCurrentView">
+            <summary>
+            Gets current layer view model.
+            </summary>
+            <returns>Current layer view model</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewLayer.IViewLayer.Set(UnityMVVM.ViewModelCore.IViewModel)">
+            <summary>
+            Set root view model. Destroy previous if it exists.
+            </summary>
+            <param name="viewModel">View model to be set.</param>
+        </member>
+        <member name="T:UnityMVVM.ViewManager.ViewManagerImpl">
+            <inheritdoc cref="T:UnityMVVM.ViewManager.IViewManager"/>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewManagerImpl.#ctor(System.Collections.Generic.IEnumerable{UnityMVVM.ViewManager.ViewLayer.IViewLayer},UnityMVVM.DI.IViewsModelsContainerAdapter)">
+            <summary>
+            Default constructor.
+            </summary>
+            <param name="layers">Layers to place views.</param>
+            <param name="viewsContainerAdapter">Adapter for views DI container.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewManagerImpl.Close(System.String)">
+            <inheritdoc cref="M:UnityMVVM.ViewManager.IViewManager.Close(System.String)"/>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewManagerImpl.CloseAbove(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewManagerImpl.GetViewName(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewManagerImpl.GetView(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewManagerImpl.Create``1(UnityMVVM.ViewModelCore.IViewModel,System.String,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)">
+            <inheritdoc cref="M:UnityMVVM.ViewManager.IViewManager.Create``1(UnityMVVM.ViewModelCore.IViewModel,System.String,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)"/>
+        </member>
+        <member name="M:UnityMVVM.ViewManager.ViewManagerImpl.Open(System.String,System.String,UnityMVVM.ViewModelCore.IPayload)">
+            <inheritdoc cref="M:UnityMVVM.ViewManager.IViewManager.Open(System.String,System.String,UnityMVVM.ViewModelCore.IPayload)"/>
+        </member>
+        <member name="T:UnityMVVM.ViewModelCore.IPayload">
+            <summary>
+            Interface to define and determine view model payload.
+            </summary>
+        </member>
+        <member name="T:UnityMVVM.ViewModelCore.IViewModel">
+            <summary>
+            Base view model interface.
+            </summary>
+        </member>
+        <member name="E:UnityMVVM.ViewModelCore.IViewModel.CloseStarted">
+            <summary>
+            Fired when view model receive start close call.
+            </summary>
+        </member>
+        <member name="E:UnityMVVM.ViewModelCore.IViewModel.Destroyed">
+            <summary>
+            Fired on view model destroyed.
+            </summary>
+        </member>
+        <member name="P:UnityMVVM.ViewModelCore.IViewModel.Layer">
+            <summary>
+            Layer, on which view was opened.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.IViewModel.Close">
+            <summary>
+            Fire <see cref="E:UnityMVVM.ViewModelCore.IViewModel.CloseStarted"/> event and internal view model close handling.
+            </summary>
+            <returns>Promise, that indicates close proccess.</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.IViewModel.Destroy">
+            <summary>
+            Destroys the view modes and view instantly.
+            </summary>
+        </member>
+        <member name="T:UnityMVVM.ViewModelCore.IViewModelInternal">
+            <summary>
+            Internal interface for initializing view model internal dependencies.
+            </summary>
+        </member>
+        <member name="T:UnityMVVM.ViewModelCore.ViewModel">
+            <summary>
+            Base class for view model.
+            </summary>
+        </member>
+        <member name="P:UnityMVVM.ViewModelCore.ViewModel.Layer">
+            <inheritdoc cref="P:UnityMVVM.ViewModelCore.IViewModel.Layer"/>
+        </member>
+        <member name="E:UnityMVVM.ViewModelCore.ViewModel.Destroyed">
+            <inheritdoc cref="E:UnityMVVM.ViewModelCore.IViewModel.Destroyed"/>
+        </member>
+        <member name="E:UnityMVVM.ViewModelCore.ViewModel.CloseStarted">
+            <inheritdoc cref="E:UnityMVVM.ViewModelCore.IViewModel.CloseStarted"/>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.SetInternalDependencies(UnityMVVM.ViewManager.IViewManager,UnityMVVM.ViewManager.ViewLayer.IViewLayer,UnityMVVM.ViewModelCore.IViewModel)">
+            <summary>
+            Default constructor for view model.
+            </summary>
+            <param name="viewManager">View manager.</param>
+            <param name="layer">Layer, on which it is placed.</param>
+            <param name="parent">Parent view model. This view model will be destroyed with it.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.CreateSubView``1(System.String,UnityMVVM.ViewModelCore.IPayload)">
+            <inheritdoc cref="M:UnityMVVM.ViewModelCore.ViewModel.CreateSubView(System.String,UnityMVVM.ViewModelCore.IPayload)"/>
+            <typeparam name="T">Type of the view model.</typeparam>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.CreateSubView(System.String,UnityMVVM.ViewModelCore.IPayload)">
+            <summary>
+            Creates a child view and view model.
+            </summary>
+            <param name="viewName">The view identifier to open.</param>
+            <param name="payload">The view model payload.</param>
+            <returns>Created view model.</returns>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.CreateSubView(System.String,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)">
+            <inheritdoc cref="M:UnityMVVM.ViewModelCore.ViewModel.CreateSubView(System.String,UnityMVVM.ViewModelCore.IPayload)"/>
+            <param name="container">The container to instantiate view to.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.CreateSubView``1(System.String,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)">
+            <inheritdoc cref="M:UnityMVVM.ViewModelCore.ViewModel.CreateSubView``1(System.String,UnityMVVM.ViewModelCore.IPayload)"/>
+            <param name="container">The container to instantiate view to.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.OpenView(System.String,System.String,UnityMVVM.ViewModelCore.IPayload)">
+            <summary>
+            Clear layer and opens view on it.
+            </summary>
+            <param name="viewLayerId">Id of the layer to open view on.</param>
+            <param name="viewName">The view identifier to open.</param>
+            <param name="payload">The view model payload.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.Destroy">
+            <inheritdoc cref="M:UnityMVVM.ViewModelCore.IViewModel.Destroy"/>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.Close">
+            <inheritdoc cref="M:UnityMVVM.ViewModelCore.IViewModel.Close"/>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.OnDestroyInternal">
+            <summary>
+            Internal method to handle view model destroying.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.OnCloseStartedInternal">
+            <summary>
+            Protected method to handle close call.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.OnOpenedInternal">
+            <summary>
+            Protected method to handle view opened.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModel.OnOpened">
+            <summary>
+            Invoked by MVVM core when view is opened.
+            </summary>
+        </member>
+        <member name="T:UnityMVVM.ViewModelCore.ViewModelsFactory.IViewFactory">
+            <summary>
+            Factory to create views.
+            </summary>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModelsFactory.IViewFactory.Create(UnityMVVM.ViewManager.ViewLayer.IViewLayer,UnityMVVM.ViewModelCore.IViewModel,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)">
+            <summary>
+            Creates view and its view model
+            </summary>
+            <param name="viewLayer">Layer to place a view.</param>
+            <param name="parent">Parent view model to set to the created view model.</param>
+            <param name="parentTransform">The transform to instantiate the view to.</param>
+            <param name="payload">View model payload.</param>
+            <returns>Returns created view model to conrol the view.</returns>
+        </member>
+        <member name="T:UnityMVVM.ViewModelCore.ViewModelsFactory.ViewFactory`1">
+            <inheritdoc cref="T:UnityMVVM.ViewModelCore.ViewModelsFactory.IViewFactory"/>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModelsFactory.ViewFactory`1.#ctor(UnityMVVM.DI.IViewsContainerAdapter,System.Func{UnityEngine.GameObject},Zenject.IInstantiator,UnityMVVM.DI.Mapper.IViewToViewModelMapper)">
+            <summary>
+            Default constructor for view factory.
+            </summary>
+            <param name="viewsContainerAdapter"></param>
+            <param name="viewPrefabGetter">The method to obtain prefab of the view.</param>
+            <param name="instantiator">Instantiator for view models.</param>
+            <param name="viewToViewModelMapper">Map of views and view models types.</param>
+        </member>
+        <member name="M:UnityMVVM.ViewModelCore.ViewModelsFactory.ViewFactory`1.Create(UnityMVVM.ViewManager.ViewLayer.IViewLayer,UnityMVVM.ViewModelCore.IViewModel,UnityEngine.Transform,UnityMVVM.ViewModelCore.IPayload)">
+            <inheritdoc cref="!:IViewFactory.Create(IViewLayer, IViewModel, IPayload)"/>
+        </member>
+    </members>
+</doc>
