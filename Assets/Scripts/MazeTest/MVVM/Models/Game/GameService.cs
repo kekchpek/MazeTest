@@ -21,9 +21,8 @@ namespace MazeTest.MVVM.Models.Game
 {
     public class GameService : IGameService
     {
-
-        private const int MinEnemiesCount = 1;
-        private const int MaxEnemiesCount = 1;
+        private const int MinEnemiesCount = 5;
+        private const int MaxEnemiesCount = 20;
         
         private const float MazeRealWidth = 100f;
         private const float MazeRealHeight = 100f;
@@ -59,6 +58,7 @@ namespace MazeTest.MVVM.Models.Game
         public async IPromise StartLevel()
         {
             await _viewManager.Open(ViewLayers.GameLayer, ViewNames.Game);
+            await _viewManager.Open(ViewLayers.ScreenLayer, ViewNames.GameOverlay);
             var gameView = _viewManager.GetView(ViewLayers.GameLayer)!;
             var maze = _viewManager.Create<IMazeViewModel>(gameView, ViewNames.Maze, 
                 gameView.Layer.Container, 

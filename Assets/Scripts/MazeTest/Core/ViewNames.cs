@@ -10,5 +10,6 @@ namespace MazeTest.Core
         public const string Enemy = nameof(Enemy);
         public const string WinTrigger = nameof(WinTrigger);
         public const string WinPopup = nameof(WinPopup);
+        public const string GameOverlay = nameof(GameOverlay);
     }
 }

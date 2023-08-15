@@ -3,11 +3,14 @@ using MazeTest.Core.Startup;
 using MazeTest.MVVM.Models.CameraService;
 using MazeTest.MVVM.Models.Game;
 using MazeTest.MVVM.Models.Input;
+using MazeTest.MVVM.Models.Lose;
 using MazeTest.MVVM.Models.MazeCore;
 using MazeTest.MVVM.Models.NavigationService;
 using MazeTest.MVVM.Views.Enemy;
 using MazeTest.MVVM.Views.Game;
+using MazeTest.MVVM.Views.GameOverlay;
 using MazeTest.MVVM.Views.LosePopup;
+using MazeTest.MVVM.Views.LoseTimer;
 using MazeTest.MVVM.Views.MainMenu;
 using MazeTest.MVVM.Views.MazeView;
 using MazeTest.MVVM.Views.Player;
@@ -38,9 +41,6 @@ namespace MazeTest.Core
             Container.InstallView<MainMenuView, IMainMenuViewModel, MainMenuViewModel>(
                 ViewNames.MainMenu, 
                 () => Resources.Load<GameObject>(GetViewPath("MainMenuView")));
-            Container.InstallView<GameView, IViewModel, ViewModel>(
-                ViewNames.Game, 
-                () => Resources.Load<GameObject>(GetViewPath("GameView")));
             Container.InstallView<PlayerView, IPlayerViewModel, PlayerViewModel>(
                 ViewNames.Player,
                 () => Resources.Load<GameObject>(GetViewPath("PlayerView")));
@@ -61,6 +61,14 @@ namespace MazeTest.Core
                 ViewNames.Enemy,
                 () => Resources.Load<GameObject>(GetViewPath("EnemyView")));
             
+            Container.InstallView<GameOverlayView, IViewModel, ViewModel>(
+                ViewNames.GameOverlay,
+                () => Resources.Load<GameObject>(GetViewPath("GameOverlayView")));
+            Container.InstallView<GameView, IGameViewModel, GameViewModel>(
+                ViewNames.Game, 
+                () => Resources.Load<GameObject>(GetViewPath("GameView")));
+            Container.InstallView<LoseTimerView, ILoseTimerViewModel, LoseTimerViewModel>();
+            
             Container.FastBind<IGameService, GameService>();
             Container.FastBind<IGameMutableModel, IGameModel, GameModel>();
             
@@ -70,6 +78,9 @@ namespace MazeTest.Core
             Container.FastBind<ICameraService, CameraService>();
             
             Container.FastBind<INavigationService, NavigationService>();
+            
+            Container.FastBindMono<ILoseService, LoseService>();
+            Container.FastBind<ILoseMutableModel, ILoseModel, LoseModel>();
         }
 
         private static string GetViewPath(string viewName)

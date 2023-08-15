@@ -1,5 +1,6 @@
 using AsyncReactAwait.Bindable;
 using MazeTest.Core;
+using MazeTest.MVVM.Models.Lose;
 using MazeTest.MVVM.Views.Enemy.Payload;
 using UnityEngine;
 using UnityMVVM.ViewModelCore;
@@ -15,6 +16,7 @@ namespace MazeTest.MVVM.Views.Enemy
         private const float DistanceEpsilon = 0.3f;
         
         private readonly IEnemyPayload _payload;
+        private readonly ILoseService _loseService;
 
         private readonly IMutable<Vector3?> _destination = new Mutable<Vector3?>(Vector3.zero);
 
@@ -25,14 +27,19 @@ namespace MazeTest.MVVM.Views.Enemy
         private bool _playerInRange;
 
         private int _currentPatrolPoint;
+
+        private int? _loseTimerId;
         
         public IBindable<Vector3?> Destination => _destination;
 
         public Vector3 SpawnPosition => _payload.SpawnPosition;
 
-        public EnemyViewModel(IEnemyPayload payload)
+        public EnemyViewModel(
+            IEnemyPayload payload,
+            ILoseService loseService)
         {
             _payload = payload;
+            _loseService = loseService;
         }
 
         public void Initialize()
@@ -76,10 +83,16 @@ namespace MazeTest.MVVM.Views.Enemy
                 raycastHit.collider.CompareTag(Tags.Player))
             {
                 _playerInRange = true;
+                _loseTimerId ??= _loseService.StartLoseTimer();
                 UpdateDestination(_playerPosition);
             }
             else
             {
+                if (_loseTimerId.HasValue)
+                {
+                    _loseService.StopLoseTimer(_loseTimerId.Value);
+                    _loseTimerId = null;
+                }
                 _playerInRange = false;
             }
         }
