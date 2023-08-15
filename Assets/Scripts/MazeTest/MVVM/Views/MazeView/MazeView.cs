@@ -11,6 +11,7 @@ namespace MazeTest.MVVM.Views.MazeView
         [SerializeField] private Transform _floor;
         [SerializeField] private GameObject _wallPrefab;
         [SerializeField] private Transform _wallsContainer;
+        [SerializeField] private Transform _overviewCameraAnchor;
 
         private GameObject[] _walls = Array.Empty<GameObject>();
 
@@ -20,6 +21,11 @@ namespace MazeTest.MVVM.Views.MazeView
             SmartBind(ViewModel!.FloorHeight, UpdateFloorSize);
             SmartBind(ViewModel!.FloorWidth, UpdateFloorSize);
             SmartBind(ViewModel!.Walls, UpdateWalls);
+            SmartBind(ViewModel!.MazeOverviewCameraTransform, x =>
+            {
+                _overviewCameraAnchor.rotation = Quaternion.LookRotation(x.GetColumn(2), x.GetColumn(1));
+                _overviewCameraAnchor.position = x.GetColumn(3);
+            });
         }
 
         private void UpdateWalls(IReadOnlyList<WallData> wallsData)

@@ -26,8 +26,10 @@ namespace MazeTest.MVVM.Views.MazeView
 
         private readonly IMutable<float> _cellWidth = new Mutable<float>();
         private readonly IMutable<float> _cellHeight = new Mutable<float>();
+        private readonly IMutable<Matrix4x4> _mazeOverviewCameraTransform = new Mutable<Matrix4x4>();
 
         public IBindable<IReadOnlyList<WallData>> Walls => _walls;
+        public IBindable<Matrix4x4> MazeOverviewCameraTransform => _mazeOverviewCameraTransform;
         public IBindable<float> FloorWidth => _width;
         public IBindable<float> FloorHeight => _height;
         public IBindable<float> CellWidth => _cellWidth;
@@ -47,7 +49,12 @@ namespace MazeTest.MVVM.Views.MazeView
             _height.Value = _payload.Height;
             var maze = _payload.Maze;
             _cellWidth.Value = _payload.Width / maze.Width;
-            _cellHeight.Value = _payload.Height / maze.Width;
+            _cellHeight.Value = _payload.Height / maze.Height;
+            _mazeOverviewCameraTransform.Value = Matrix4x4.TRS(
+                new Vector3(_width.Value / 2f, Mathf.Max(_width.Value / 2f, _height.Value), _height.Value / 2f),
+                Quaternion.LookRotation(Vector3.down),
+                Vector3.one
+            );
             var walls = new List<WallData>(maze.Width * maze.Height * 4);
             for (var i = 0; i < maze.Width; i++)
             for (var j = 0; j < maze.Height; j++)

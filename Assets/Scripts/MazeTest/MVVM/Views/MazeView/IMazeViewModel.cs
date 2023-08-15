@@ -9,6 +9,7 @@ namespace MazeTest.MVVM.Views.MazeView
     public interface IMazeViewModel : IViewModel
     {
         IBindable<IReadOnlyList<WallData>> Walls { get; }
+        IBindable<Matrix4x4> MazeOverviewCameraTransform { get; }
         IBindable<float> FloorWidth { get; }
         IBindable<float> FloorHeight { get; }
         IBindable<float> CellWidth { get; }
