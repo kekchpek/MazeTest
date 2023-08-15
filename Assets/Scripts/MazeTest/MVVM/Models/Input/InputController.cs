@@ -21,9 +21,15 @@ namespace MazeTest.MVVM.Models.Input
             _binaryInputs.Add(InputUnit.CameraSwap, new Mutable<bool>());
             foreach (InputUnit unit in Enum.GetValues(typeof(InputUnit)))
             {
-                _vectorInputSources.Add(unit, new List<IBindable<Vector3>>());
-                _binaryInputSources.Add(unit, new List<IBindable<bool>>());
-                
+                if (_vectorInputs.ContainsKey(unit))
+                {
+                    _vectorInputSources.Add(unit, new List<IBindable<Vector3>>());
+                }
+                if (_binaryInputs.ContainsKey(unit))
+                {
+                    _binaryInputSources.Add(unit, new List<IBindable<bool>>());
+                }
+
                 void UpdateUnit()
                 {
                     if (_vectorInputs.TryGetValue(unit, out var vectorInputValue))
