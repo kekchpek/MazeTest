@@ -25,6 +25,7 @@ namespace MazeTest.MVVM.Views.Game
 
         private async void OnLost()
         {
+            _loseService.Lost -= OnLost;
             await _gameService.LoseGame();
         }
 

@@ -2,8 +2,8 @@ namespace MazeTest.Core
 {
     public static class GameConfig
     {
-        public const int MazeCellsCountWidth = 15;
-        public const int MazeCellsCountHeight = 30;
+        public const int MazeCellsCountWidth = 10;
+        public const int MazeCellsCountHeight = 10;
 
         public const float MazeCellSizeWidth = 10f;
         public const float MazeCellSizeHeight = 10f;

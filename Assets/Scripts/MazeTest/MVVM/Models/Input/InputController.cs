@@ -1,54 +1,92 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AsyncReactAwait.Bindable;
 using UnityEngine;
 
 namespace MazeTest.MVVM.Models.Input
 {
-    public class InputController : MonoBehaviour, IInputController
+    public class InputController : IInputController, IInputProvidersRegister
     {
         private readonly Dictionary<InputUnit, IMutable<Vector3>> _vectorInputs = new();
         private readonly Dictionary<InputUnit, IMutable<bool>> _binaryInputs = new();
 
+        private readonly Dictionary<InputUnit, Action> _inputUpdateCallbacks = new();
+        private readonly Dictionary<InputUnit, List<IBindable<Vector3>>> _vectorInputSources = new();
+        private readonly Dictionary<InputUnit, List<IBindable<bool>>> _binaryInputSources = new();
+
         public InputController()
         {
             _vectorInputs.Add(InputUnit.Direction, new Mutable<Vector3>());
-            
             _binaryInputs.Add(InputUnit.CameraSwap, new Mutable<bool>());
+            foreach (InputUnit unit in Enum.GetValues(typeof(InputUnit)))
+            {
+                _vectorInputSources.Add(unit, new List<IBindable<Vector3>>());
+                _binaryInputSources.Add(unit, new List<IBindable<bool>>());
+                
+                void UpdateUnit()
+                {
+                    if (_vectorInputs.TryGetValue(unit, out var vectorInputValue))
+                    {
+                        vectorInputValue.Value = _vectorInputSources[unit]
+                            .Aggregate(Vector3.zero, (r, x) =>
+                            {
+                                if (x.Value.magnitude > r.magnitude)
+                                {
+                                    return x.Value;
+                                }
+                                return r;
+                            });
+                    }
+                    if (_binaryInputs.TryGetValue(unit, out var binaryInputValue))
+                    {
+                        binaryInputValue.Value = _binaryInputSources[unit]
+                            .Aggregate(false, (r, x) => r || x.Value);
+                    }
+                }
+                _inputUpdateCallbacks.Add(unit, UpdateUnit);
+            }
+        }
+        
+        public void Register(IInputProvider provider)
+        {
+            if (provider is IVectorsInputProvider vectorsInputProvider)
+            {
+                foreach (var controlUnit in vectorsInputProvider.GetControlUnits())
+                {
+                    controlUnit.providingInputValue.Bind(_inputUpdateCallbacks[controlUnit.unit]);
+                    _vectorInputSources[controlUnit.unit].Add(controlUnit.providingInputValue);
+                }
+            }
+
+            if (provider is IBinaryInputsProvider binaryInputsProvider)
+            {
+                foreach (var controlUnit in binaryInputsProvider.GetControlUnits())
+                {
+                    controlUnit.providingInputValue.Bind(_inputUpdateCallbacks[controlUnit.unit]);
+                    _binaryInputSources[controlUnit.unit].Add(controlUnit.providingInputValue);
+                }
+            }
         }
 
-        private void Update()
+        public void Unregister(IInputProvider provider)
         {
-            HandleDirection();
-            HandleBinaryUnits();
-        }
-
-        private void HandleBinaryUnits()
-        {
-            _binaryInputs[InputUnit.CameraSwap].Set(UnityEngine.Input.GetKey(KeyCode.Q));
-        }
-
-        private void HandleDirection()
-        {
-            var direction = new Vector3();
-            if (UnityEngine.Input.GetKey(KeyCode.W))
+            if (provider is IVectorsInputProvider vectorsInputProvider)
             {
-                direction += Vector3.forward;
+                foreach (var controlUnit in vectorsInputProvider.GetControlUnits())
+                {
+                    controlUnit.providingInputValue.Unbind(_inputUpdateCallbacks[controlUnit.unit]);
+                    _vectorInputSources[controlUnit.unit].Remove(controlUnit.providingInputValue);
+                }
             }
-            if (UnityEngine.Input.GetKey(KeyCode.S))
+            else if (provider is IBinaryInputsProvider binaryInputsProvider)
             {
-                direction += Vector3.back;
+                foreach (var controlUnit in binaryInputsProvider.GetControlUnits())
+                {
+                    controlUnit.providingInputValue.Unbind(_inputUpdateCallbacks[controlUnit.unit]);
+                    _binaryInputSources[controlUnit.unit].Remove(controlUnit.providingInputValue);
+                }
             }
-            if (UnityEngine.Input.GetKey(KeyCode.A))
-            {
-                direction += Vector3.left;
-            }
-            if (UnityEngine.Input.GetKey(KeyCode.D))
-            {
-                direction += Vector3.right;
-            }
-
-            _vectorInputs[InputUnit.Direction].Value = direction.normalized;
         }
 
         public IBindable<Vector3> GetVectorInput(InputUnit unit)

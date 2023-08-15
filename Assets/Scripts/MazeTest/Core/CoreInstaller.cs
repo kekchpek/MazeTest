@@ -1,4 +1,5 @@
 using System.Linq;
+using MazeTest.Core.Installers;
 using MazeTest.Core.Startup;
 using MazeTest.MVVM.Models.CameraService;
 using MazeTest.MVVM.Models.Game;
@@ -26,9 +27,6 @@ namespace MazeTest.Core
 {
     public class CoreInstaller : MonoInstaller
     {
-
-        private const string ViewsPath = "Views/";
-
         [SerializeField] private Transform[] _viewLayers;
         
         public override void InstallBindings()
@@ -40,52 +38,12 @@ namespace MazeTest.Core
             
             Container.InstallView<MainMenuView, IMainMenuViewModel, MainMenuViewModel>(
                 ViewNames.MainMenu, 
-                () => Resources.Load<GameObject>(GetViewPath("MainMenuView")));
-            Container.InstallView<PlayerView, IPlayerViewModel, PlayerViewModel>(
-                ViewNames.Player,
-                () => Resources.Load<GameObject>(GetViewPath("PlayerView")));
-            Container.InstallView<WinTriggerView, IWinTriggerViewModel, WinTriggerViewModel>(
-                ViewNames.WinTrigger,
-                () => Resources.Load<GameObject>(GetViewPath("WinTriggerView")));
-            Container.InstallView<MazeView, IMazeViewModel, MazeViewModel>(
-                ViewNames.Maze,
-                () => Resources.Load<GameObject>(GetViewPath("MazeView")));
-            
-            Container.InstallView<WinPopupView, IWinPopupViewModel, WinPopupViewModel>(
-                ViewNames.WinPopup,
-                () => Resources.Load<GameObject>(GetViewPath("WinPopupView")));
-            Container.InstallView<LosePopupView, ILosePopupViewModel, LosePopupViewModel>(
-                ViewNames.LosePopup,
-                () => Resources.Load<GameObject>(GetViewPath("LosePopupView")));
-            Container.InstallView<EnemyView, IEnemyViewModel, EnemyViewModel>(
-                ViewNames.Enemy,
-                () => Resources.Load<GameObject>(GetViewPath("EnemyView")));
-            
-            Container.InstallView<GameOverlayView, IViewModel, ViewModel>(
-                ViewNames.GameOverlay,
-                () => Resources.Load<GameObject>(GetViewPath("GameOverlayView")));
-            Container.InstallView<GameView, IGameViewModel, GameViewModel>(
-                ViewNames.Game, 
-                () => Resources.Load<GameObject>(GetViewPath("GameView")));
-            Container.InstallView<LoseTimerView, ILoseTimerViewModel, LoseTimerViewModel>();
-            
-            Container.FastBind<IGameService, GameService>();
-            Container.FastBind<IGameMutableModel, IGameModel, GameModel>();
-            
-            Container.FastBind<IMazeGenerator, MazeGenerator>();
-            Container.FastBindMono<IInputController, InputController>();
+                () => Resources.Load<GameObject>(AssetPaths.GetViewPath("MainMenuView")));
             
             Container.FastBind<ICameraService, CameraService>();
-            
-            Container.FastBind<INavigationService, NavigationService>();
-            
-            Container.FastBindMono<ILoseService, LoseService>();
-            Container.FastBind<ILoseMutableModel, ILoseModel, LoseModel>();
-        }
 
-        private static string GetViewPath(string viewName)
-        {
-            return ViewsPath + viewName;
+            Container.Install<InputInstaller>();
+            Container.Install<GameInstaller>();
         }
     }
 }
