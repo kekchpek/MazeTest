@@ -1,5 +1,6 @@
 using AsyncReactAwait.Bindable;
 using AsyncReactAwait.Bindable.BindableExtensions;
+using MazeTest.Core;
 using MazeTest.MVVM.Models.Game;
 using MazeTest.MVVM.Models.Input;
 using MazeTest.MVVM.Views.Player.Payload;
@@ -12,7 +13,7 @@ namespace MazeTest.MVVM.Views.Player
     public class PlayerViewModel : ViewModel, IPlayerViewModel, IInitializable
     {
 
-        private const float PlayerSpeed = 15f;
+        private const float PlayerSpeed = GameConfig.PlayerSpeed;
 
         private readonly IMutable<Vector3> _position = new Mutable<Vector3>();
 

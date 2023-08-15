@@ -10,8 +10,9 @@ namespace MazeTest.MVVM.Views.Enemy
 {
     public class EnemyViewModel : ViewModel, IEnemyViewModel, IInitializable
     {
-        private const float DamageAreaAngle = 60f;
-        private const float DamageAreaDistance = 10f;
+        private const float DamageAreaAngle = GameConfig.EnemiesFieldOfViewDegrees;
+        private const float DamageAreaDistance = GameConfig.EnemiesFieldOfViewDist;
+        private const float DamageAreaCloseDistance = GameConfig.EnemiesCloseDistance;
         
         private const float DistanceEpsilon = 0.3f;
         
@@ -31,6 +32,7 @@ namespace MazeTest.MVVM.Views.Enemy
         private int? _loseTimerId;
         
         public IBindable<Vector3?> Destination => _destination;
+        public IBindable<float> Speed { get; } = new Mutable<float>(GameConfig.EnemiesSpeed);
 
         public Vector3 SpawnPosition => _payload.SpawnPosition;
 
@@ -77,7 +79,8 @@ namespace MazeTest.MVVM.Views.Enemy
             var playerDir = playerFlatPos - enemyFlatPos;
             var angle = Vector3.Angle(playerDir, flatForward);
             var distance = Vector3.Distance(enemyFlatPos, playerFlatPos);
-            if (angle < DamageAreaAngle &&
+            if (distance < DamageAreaCloseDistance ||
+                angle < DamageAreaAngle &&
                 distance < DamageAreaDistance &&
                 Physics.Raycast(_position.Value, _playerPosition - _position.Value, out var raycastHit, DamageAreaDistance) &&
                 raycastHit.collider.CompareTag(Tags.Player))

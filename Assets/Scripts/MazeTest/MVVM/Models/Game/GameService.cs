@@ -21,14 +21,14 @@ namespace MazeTest.MVVM.Models.Game
 {
     public class GameService : IGameService
     {
-        private const int MinEnemiesCount = 5;
-        private const int MaxEnemiesCount = 20;
+        private const int MinEnemiesCount = GameConfig.EnemiesMinCount;
+        private const int MaxEnemiesCount = GameConfig.EnemiesMaxCount;
         
-        private const float MazeRealWidth = 100f;
-        private const float MazeRealHeight = 100f;
+        private const float MazeRealWidth = GameConfig.MazeCellSizeWidth * MazeWidth;
+        private const float MazeRealHeight = GameConfig.MazeCellSizeHeight * MazeHeight;
         
-        private const int MazeWidth = 10;
-        private const int MazeHeight = 10;
+        private const int MazeWidth = GameConfig.MazeCellsCountWidth;
+        private const int MazeHeight = GameConfig.MazeCellsCountHeight;
 
         private const float CellPatrolFactor = 0.25f;
 

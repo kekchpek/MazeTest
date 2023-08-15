@@ -22,6 +22,7 @@ namespace MazeTest.MVVM.Views.Enemy
             transform.position = ViewModel!.SpawnPosition;
             _navMeshAgent.enabled = true;
             SmartBind(ViewModel!.Destination, OnDestinationChanged);
+            SmartBind(ViewModel!.Speed, x => _navMeshAgent.speed = x);
         }
 
         private void OnDestinationChanged(Vector3? destination)

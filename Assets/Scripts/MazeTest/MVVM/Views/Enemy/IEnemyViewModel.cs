@@ -8,6 +8,7 @@ namespace MazeTest.MVVM.Views.Enemy
     {
         Vector3 SpawnPosition { get; }
         IBindable<Vector3?> Destination { get; }
+        IBindable<float> Speed { get; }
         void SetOrientation(Vector3 forward);
         void SetPosition(Vector3 position);
     }
