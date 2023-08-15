@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MazeTest.Core;
 using UnityEngine;
 using Zenject;
 
@@ -10,7 +11,7 @@ namespace MazeTest.MVVM.Models.Lose
     {
         private ILoseMutableModel _model;
 
-        private const float LoseTime = 1f;
+        private const float LoseTime = GameConfig.LoseTimeInSec;
 
         private readonly SortedList<int, float> _timers = new(10);
 

@@ -17,5 +17,7 @@ namespace MazeTest.Core
 
         public const float EnemiesSpeed = 5f;
         public const float PlayerSpeed = 15f;
+
+        public const float LoseTimeInSec = 1f;
     }
 }
